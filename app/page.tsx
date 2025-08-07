@@ -13,10 +13,21 @@ export default function Chat() {
           <div key={m.id} className="whitespace-pre-wrap">
             <div>
               <div className="font-bold">{m.role}</div>
-              {m.parts.map((part) => {
+              {m.parts.map((part, index) => {
                 switch (part.type) {
                   case "text":
                     return <p>{part.text}</p>;
+                  case "tool-addResource":
+                  case "tool-getInformation":
+                    return (
+                      <p key={index}>
+                        call{part.state === "output-available" ? "ed" : "ing"}{" "}
+                        tool: {part.type}
+                        <pre className="my-4 bg-zinc-100 p-2 rounded-sm">
+                          {JSON.stringify(part.input, null, 2)}
+                        </pre>
+                      </p>
+                    );
                 }
               })}
             </div>
